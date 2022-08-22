@@ -1,0 +1,101 @@
+body{
+    background: #fefefe;
+}
+
+h1,h2 {    
+    color: #444;
+    text-align: center;
+}
+
+.title{
+    margin-top: 50px !important;
+    font-size: 40px;
+    font-weight: 800;
+}
+
+#btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    color: #fff !important;
+    z-index: 1000;
+}
+
+.form .select, .form .login{
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 50px;
+    font-size: 20px;
+    color: #444;
+}
+
+.form .login label, .form .login button{
+    width: 100%;
+}
+
+.form .login .error-login{
+    position: relative;
+    width: 100%;
+    text-align: center;
+    color: #f00;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.form .select .choices__list{
+    font-size: 17px !important;
+    color: #333 !important; 
+}
+
+.form .input{
+    margin-top: 35px;
+    padding: 15px;
+}
+
+.form .input input,.form .input button{
+    border: 0;
+    height: 72px;
+    padding: 2px 15px;
+    width: 100%;
+    border-radius: 5px; 
+}
+
+.form .input button{
+    font-size: 25px;
+}
+
+.bg-light {
+    background: #eef0f4;
+}
+
+.choices__list--dropdown .choices__item--selectable {
+    padding-right: 1rem;
+}
+
+.choices__list--single {
+    padding: 0;
+}
+
+.choices[data-type*=select-one]:after {
+    right: 1.5rem;
+}
+
+.shadow {
+    box-shadow: 0.3rem 0.3rem 1rem rgba(178, 200, 244, 0.23);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s;
+}
+
+.query {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    width: 95%;
+    margin-top: 20px;
+}
