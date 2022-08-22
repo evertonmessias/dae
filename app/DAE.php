@@ -143,7 +143,9 @@ class DAE
             $sql = "SELECT table_name FROM all_tables;";
             $array_tables = array();
             $array_tables = explode(",", strip_tags(str_replace("</td>", ",", str_replace("TABLE_NAME", "", DAE::connect($sql)))));
-            array_pop($array_tables); ?>
+            array_pop($array_tables);             
+            $total = count($array_tables);            
+            ?>
 
             <form method="post" action="query">
                 <section class="form pb-5">
@@ -154,7 +156,7 @@ class DAE
                                 <div class="card border-0">
                                     <div class="card-body p-0">
                                         <select name="table" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
-                                            <option value="">Select Table ?</option>
+                                            <option value="">Select a Table ?&emsp;(<?php echo $total; ?> tables)</option>
                                             <?php foreach ($array_tables as $tab) { ?>
                                                 <option value="<?php echo trim($tab) ?>"><?php echo trim($tab) ?></option>
                                             <?php } ?>
