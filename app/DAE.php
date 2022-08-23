@@ -15,7 +15,7 @@ class Routes
             if (method_exists($controller, $action)) {
                 return call_user_func_array(array($controller, $action), []);
             } else {
-                echo DAE::error();
+                echo DAE::header().DAE::error().DAE::footer();;
             }
         }
     }
@@ -70,6 +70,7 @@ class DAE
             <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
             <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" rel="stylesheet">
             <link href="/assets/style.css" rel="stylesheet">
+            <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         </head>
 
         <body>
@@ -94,6 +95,7 @@ class DAE
         if ($_SESSION['dae']) {
             header('Location:select');
         } else {
+            echo DAE::header();
         ?>
             <form method="POST">
                 <section class="form pb-5">
@@ -133,20 +135,21 @@ class DAE
                 </section>
             </form>
 
-        <?php }
+        <?php
+            echo DAE::footer();
+        }
     }
 
     public static function select()
     {
         if ($_SESSION['dae']) {
-
+            echo DAE::header();
             $sql = "SELECT table_name FROM all_tables;";
             $array_tables = array();
             $array_tables = explode(",", strip_tags(str_replace("</td>", ",", str_replace("TABLE_NAME", "", DAE::connect($sql)))));
-            array_pop($array_tables);             
-            $total = count($array_tables);            
-            ?>
-
+            array_pop($array_tables);
+            $total = count($array_tables);
+        ?>
             <form method="post" action="query">
                 <section class="form pb-5">
                     <div class="container">
@@ -155,7 +158,7 @@ class DAE
                             <div class="select col-lg-6">
                                 <div class="card border-0">
                                     <div class="card-body p-0">
-                                        <select name="table" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
+                                        <select onchange="showrow(this.value)" name="table" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
                                             <option value="">Select a Table ?&emsp;(<?php echo $total; ?> tables)</option>
                                             <?php foreach ($array_tables as $tab) { ?>
                                                 <option value="<?php echo trim($tab) ?>"><?php echo trim($tab) ?></option>
@@ -164,19 +167,17 @@ class DAE
                                     </div>
                                 </div>
                             </div>
-                            <div class="input col-lg-3"><input class="shadow" type="number" name="rows" placeholder="Number Lines ?" required></div>
+                            <div class="input col-lg-3"><input class="shadow result" type="number" name="rows" placeholder="Rows ?" required></div>
                             <div class="input col-lg-1"><button title="Submit" class="shadow btn btn-primary" type="submit" name="submit"><i class="ri-play-fill"></i></button></div>
                             <div class="col-lg-1"></div>
                         </div>
                 </section>
-
             </form>
-
             <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
             <script src="/assets/select.js"></script>
-
         <?php
+            echo DAE::footer();
         } else {
             echo DAE::error();
         }
@@ -186,6 +187,7 @@ class DAE
     {
 
         if ($_SESSION['dae']) {
+            echo DAE::header();
         ?>
             <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
             <button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top"><i class="ri-arrow-up-fill"></i></button>
@@ -231,8 +233,6 @@ class DAE
                     <br><br>
 
                 </div>
-
-                <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
                 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
                 <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
                 <script src="assets/scroll.js"></script>
@@ -242,6 +242,7 @@ class DAE
             } else {
                 echo DAE::error();
             }
+            echo DAE::footer();
         } else {
             echo DAE::error();
         }
@@ -256,5 +257,14 @@ class DAE
             <a href='/' title='Go Back'><button type='button' class='btn btn-primary'>&emsp;<i class='ri-skip-back-fill'></i>&emsp;</button></a>
         </h2>
 <?php
+    }
+
+    public static function showrow()
+    {
+        $table = $_POST['tab'];
+        $sql = "SELECT COUNT(*) FROM $table;";
+        preg_match_all('/<tr>(.*?)<\/tr>/s', DAE::connect($sql), $content);
+        $result = trim(strip_tags($content[0][1]));
+        echo $result;
     }
 }
