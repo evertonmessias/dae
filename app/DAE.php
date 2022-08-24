@@ -15,7 +15,7 @@ class Routes
             if (method_exists($controller, $action)) {
                 return call_user_func_array(array($controller, $action), []);
             } else {
-                echo DAE::header().DAE::error().DAE::footer();;
+                echo DAE::header() . DAE::error() . DAE::footer();;
             }
         }
     }
@@ -154,7 +154,6 @@ class DAE
                 <section class="form pb-5">
                     <div class="container">
                         <div class="row">
-                            <div class="col-lg-1"></div>
                             <div class="select col-lg-6">
                                 <div class="card border-0">
                                     <div class="card-body p-0">
@@ -167,9 +166,16 @@ class DAE
                                     </div>
                                 </div>
                             </div>
-                            <div class="input col-lg-3"><input class="shadow result" type="number" name="rows" placeholder="Rows ?" required></div>
+
+                            <div class="input number col-lg-3"><input class="shadow result" type="number" name="rows" placeholder="Rows ?" required></div>
+
+                            <div class="input radio col-lg-2">
+                                <label><input type="radio" name="order" value="ASC" checked>&emsp;ASC</label>
+                                <br>
+                                <label><input type="radio" name="order" value="DESC">&emsp;DESC</label>
+                            </div>
+
                             <div class="input col-lg-1"><button title="Submit" class="shadow btn btn-primary" type="submit" name="submit"><i class="ri-play-fill"></i></button></div>
-                            <div class="col-lg-1"></div>
                         </div>
                 </section>
             </form>
@@ -198,8 +204,9 @@ class DAE
 
                 $table = $_POST['table'];
                 $rows = $_POST['rows'];
+                $order = $_POST['order'];
 
-                $sql = "SELECT * FROM $table WHERE ROWNUM <= $rows;";
+                $sql = "SELECT * FROM $table WHERE ROWNUM <= $rows ORDER BY 1 $order;";
 
                 preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
                 $results_table = $content[0];
