@@ -76,7 +76,6 @@ class DAE
         <body>
             <h1 class="title">DAE</h1>
         <?php
-
     }
 
 
@@ -84,7 +83,6 @@ class DAE
     {
         ?>
         </body>
-
         </html>
         <?php
     }
@@ -155,10 +153,11 @@ class DAE
                     <div class="container">
                         <div class="row">
                             <div class="select col-lg-6">
+                                <h5>Select a Table:</h5>
                                 <div class="card border-0">
                                     <div class="card-body p-0">
                                         <select onchange="showrow(this.value)" name="table" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
-                                            <option value="">Select a Table ?&emsp;(<?php echo $total; ?> tables)</option>
+                                            <option value="">(Total: <?php echo $total; ?> tables)</option>
                                             <?php foreach ($array_tables as $tab) { ?>
                                                 <option value="<?php echo trim($tab) ?>"><?php echo trim($tab) ?></option>
                                             <?php } ?>
@@ -167,15 +166,24 @@ class DAE
                                 </div>
                             </div>
 
-                            <div class="input number col-lg-3"><input class="shadow result" type="number" name="rows" placeholder="Rows ?" required></div>
-
-                            <div class="input radio col-lg-2">
-                                <label><input type="radio" name="order" value="ASC" checked>&emsp;ASC</label>
-                                <br>
-                                <label><input type="radio" name="order" value="DESC">&emsp;DESC</label>
+                            <div class="input col-lg-3">
+                                <h5>Rows number ?</h5>
+                                <input class="shadow result" type="number" name="rows" placeholder="" required>
                             </div>
 
-                            <div class="input col-lg-1"><button title="Submit" class="shadow btn btn-primary" type="submit" name="submit"><i class="ri-play-fill"></i></button></div>
+                            <div class="input col-lg-2">
+                                <h5>Order ?</h5>
+                                <div class="radio">                                    
+                                    <label><input type="radio" name="order" value="ASC" checked>&emsp;ASC</label>
+                                    <br>
+                                    <label><input type="radio" name="order" value="DESC">&emsp;DESC</label>
+                                </div>
+                            </div>
+
+                            <div class="input col-lg-1">
+                                <h5>&nbsp;</h5>
+                                <button title="Submit" class="shadow btn btn-primary" type="submit" name="submit"><i class="ri-play-fill"></i></button>
+                            </div>
                         </div>
                 </section>
             </form>

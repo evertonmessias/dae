@@ -1,11 +1,11 @@
 function showrow(tab){
-    $(".result").attr("placeholder","wait ...");
+    $(".result").attr("placeholder","Wait ...");
     $.ajax({
         type: "POST",
         url: "showrow",
         data: {tab:tab},
         success: function(res){
-            $(".result").attr("placeholder","Rows ?  (max. "+res+" rows)").prop('disabled', false);
+            $(".result").attr("placeholder","(Max. "+res+" rows)").prop('disabled', false);
         }
     });    
 }
