@@ -9,7 +9,7 @@ function showrow(tab){
         success: function(res){
             $(".form .wait").hide();
             $(".form .ico-wait").hide();
-            $(".result").attr("placeholder","( "+res+" rows)").show();
+            $(".result").attr("placeholder","( "+res+" rows )").show();
         }
     });    
 }
