@@ -1,11 +1,15 @@
 function showrow(tab){
-    $(".result").attr("placeholder","Wait ...");
+    $(".result").hide();
+    $(".form .wait").show();
+    $(".form .ico-wait").show();
     $.ajax({
         type: "POST",
         url: "showrow",
         data: {tab:tab},
         success: function(res){
-            $(".result").attr("placeholder","(Max. "+res+" rows)").prop('disabled', false);
+            $(".form .wait").hide();
+            $(".form .ico-wait").hide();
+            $(".result").attr("placeholder","(Max. "+res+" rows)").show();
         }
     });    
 }
@@ -18,7 +22,6 @@ const sortingchoices = new Choices(sorting, {
 });
 
 let sortingClass = sorting.getAttribute('class');
-window.onload= function () {
-    $(".result").prop('disabled', true);
+window.onload= function () {    
     sorting.parentElement.setAttribute('class', sortingClass);
 }

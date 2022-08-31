@@ -83,6 +83,7 @@ class DAE
     {
         ?>
         </body>
+
         </html>
         <?php
     }
@@ -168,12 +169,17 @@ class DAE
 
                             <div class="input col-lg-3">
                                 <h5>Rows number ?</h5>
-                                <input class="shadow result" type="number" name="rows" placeholder="" required>
+                                <div class="wait shadow">
+                                    <div class="ico-wait spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                                <input class="result shadow" type="number" name="rows" placeholder="" required>
                             </div>
 
                             <div class="input col-lg-2">
                                 <h5>Order ?</h5>
-                                <div class="radio">                                    
+                                <div class="radio">
                                     <label><input type="radio" name="order" value="ASC" checked>&emsp;ASC</label>
                                     <br>
                                     <label><input type="radio" name="order" value="DESC">&emsp;DESC</label>

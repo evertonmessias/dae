@@ -67,6 +67,15 @@ h1,h2 {
     border-radius: 5px;
 }
 
+.form .result, .form .ico-wait{
+    display: none;
+}
+
+.form .wait{
+    height: 72px;
+    padding: 20px;
+}
+
 .form .radio{
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
     border: 0;
