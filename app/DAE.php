@@ -25,32 +25,41 @@ class DAE
 {
     public static function connect($sql)
     {
-        $connection = ssh2_connect(ssh_host, ssh_port);
+        if ($_SESSION['dae'] == "CEBI") {
 
-        if (ssh2_auth_password($connection, ssh_user, ssh_pass)) {
+            $connection = ssh2_connect(ssh_host, ssh_port);
 
-            $conttStream = ssh2_exec($connection, 'source .bash_profile; echo "' . $sql . '" | sqlplus -M "HTML ON" ' . orcl);
+            if (ssh2_auth_password($connection, ssh_user, ssh_pass)) {
+                $conttStream = ssh2_exec($connection, 'source .bash_profile; echo "' . $sql . '" | sqlplus -M "HTML ON" ' . orcl);
 
-            $errorStream = ssh2_fetch_stream($conttStream, SSH2_STREAM_STDERR);
+                $errorStream = ssh2_fetch_stream($conttStream, SSH2_STREAM_STDERR);
 
-            stream_set_blocking($errorStream, true);
-            stream_set_blocking($conttStream, true);
+                stream_set_blocking($errorStream, true);
+                stream_set_blocking($conttStream, true);
 
-            $error = stream_get_contents($errorStream);
-            if ($error != "") {
-                return "Error: " . $error;
+                $error = stream_get_contents($errorStream);
+                if ($error != "") {
+                    return "Error: " . $error;
+                }
+
+                $contt = stream_get_contents($conttStream);
+                if ($contt != "") {
+                    preg_match_all('/SQL&gt;(.*)SQL&gt;/s', $contt, $content);
+                    return $content[1][0];
+                }
+
+                fclose($errorStream);
+                fclose($conttStream);
+            } else {
+                die("<p>Authentication Failed!</p>");
             }
-
-            $contt = stream_get_contents($conttStream);
-            if ($contt != "") {
-                preg_match_all('/SQL&gt;(.*)SQL&gt;/s', $contt, $content);
-                return $content[1][0];
+        } elseif ($_SESSION['dae'] == "ASSESSOR") {
+            try {
+                $conn = new PDO(fdsn, user, pass);
+                return $conn->query($sql);
+            } catch (PDOException $e) {
+                return "ERROR: " . $e->getMessage();
             }
-
-            fclose($errorStream);
-            fclose($conttStream);
-        } else {
-            die("<p>Authentication Failed!</p>");
         }
     }
 
@@ -74,8 +83,15 @@ class DAE
         </head>
 
         <body>
-            <h1 class="title">DAE</h1>
-            <h4>Sistema Cebi</h4>
+            <div class="box-title">
+                <h1 class="title">DAE</h1>
+                <?php
+                if ($_SESSION['dae']) {
+                    echo '<a href="logout"><button type="button" class="btn btn-danger">Logout</button></a>';
+                    echo "<h4>Database: " . $_SESSION['dae'] . "</h4>";
+                }
+                ?>
+            </div>
         <?php
     }
 
@@ -114,14 +130,22 @@ class DAE
                                         <input type="password" name="pass" class="form-control" placeholder="Enter your Password" required>
                                     </label>
                                 </div>
-                                <br><br>
+                                <br>
+
+                                <div class="form-check">
+                                    <label class="form-check-label"><input class="form-check-input" type="radio" name="database" value="CEBI" checked> DATABASE CEBI</label>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label"><input class="form-check-input" type="radio" name="database" value="ASSESSOR"> DATABASE ASSESSOR</label>
+                                </div>
+
+                                <br>
                                 <button type="submit" name="btnlogin" class="btn btn-primary">Submit</button>
 
                                 <?php
                                 if (isset($_POST['btnlogin']) &&  isset($_POST['user']) && isset($_POST['pass'])) {
-
                                     if ($_POST['user'] == USERNAME && $_POST['pass'] == PASSWORD) {
-                                        $_SESSION['dae'] = $_POST['user'];
+                                        $_SESSION['dae'] = $_POST['database'];
                                         header('Location:select');
                                     } else {
                                         echo "<p class='error-login'>Username or Password <b>Invalid</b> !</p>";
@@ -142,7 +166,7 @@ class DAE
 
     public static function select()
     {
-        if ($_SESSION['dae']) {
+        if ($_SESSION['dae'] == "CEBI") {
             echo DAE::header();
             $sql = "SELECT table_name FROM all_tables;";
             $array_tables = array();
@@ -199,6 +223,22 @@ class DAE
             <script src="/assets/select.js"></script>
         <?php
             echo DAE::footer();
+        } elseif ($_SESSION['dae'] == "ASSESSOR") {
+            echo DAE::header();
+
+            echo "<br><br><h4>Em construção ...</h4><br>";
+
+            $sql = 'SELECT RDB$RELATION_NAME FROM RDB$RELATIONS WHERE RDB$VIEW_BLR IS NULL';
+
+            $query = DAE::connect($sql);
+
+            echo "<ol>";
+            foreach ($query as $row) {
+                echo "<li>" . $row[0] . "</li>";
+            }
+            echo "</ol>";
+
+            echo DAE::footer();
         } else {
             echo DAE::error();
         }
@@ -239,7 +279,7 @@ class DAE
 
                 <div class="query">
 
-                    <h2><?php echo $table; ?></h2>
+                    <h4>Table: <?php echo $table; ?></h4>
 
                     <?php if ($thead != "" && $tbody != "") {
                         echo $strings_table;
@@ -288,5 +328,12 @@ class DAE
         preg_match_all('/<tr>(.*?)<\/tr>/s', DAE::connect($sql), $content);
         $result = trim(strip_tags($content[0][1]));
         echo $result;
+    }
+
+    public static function logout()
+    {
+        unset($_SESSION['dae']);
+        session_destroy();
+        header('Location:/');
     }
 }

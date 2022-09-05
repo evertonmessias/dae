@@ -7,10 +7,20 @@ h1,h2,h3,h4 {
     text-align: center;
 }
 
-.title{
-    margin-top: 50px !important;
+.box-title{
+    padding-top: 30px;
+}
+
+.box-title .title{    
     font-size: 40px;
     font-weight: 800;
+}
+
+.box-title a{
+    display: block;
+    position: absolute;
+    right: 100px;
+    top: 50px;
 }
 
 #btn-back-to-top {
