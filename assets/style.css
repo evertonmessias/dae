@@ -90,7 +90,7 @@ h1,h2,h3,h4 {
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
     border: 0;
     height: 72px;
-    padding: 13px 50px;
+    padding: 10px;
     border-radius: 5px; 
 }
 
