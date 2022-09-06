@@ -166,8 +166,8 @@ class DAE
 
     public static function select()
     {
+        echo DAE::header();
         if ($_SESSION['dae'] == "CEBI") {
-            echo DAE::header();
             $sql = "SELECT table_name FROM all_tables;";
             $array_tables = array();
             $array_tables = explode(",", strip_tags(str_replace("</td>", ",", str_replace("TABLE_NAME", "", DAE::connect($sql)))));
@@ -218,42 +218,83 @@ class DAE
                         </div>
                 </section>
             </form>
-            <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="/assets/select.js"></script>
-        <?php
-            echo DAE::footer();
-        } elseif ($_SESSION['dae'] == "ASSESSOR") {
-            echo DAE::header();
 
-            echo "<br><br><h4>Em construção ...</h4><br>";
+        <?php
+
+        } elseif ($_SESSION['dae'] == "ASSESSOR") {
 
             $sql = 'SELECT RDB$RELATION_NAME FROM RDB$RELATIONS WHERE RDB$VIEW_BLR IS NULL';
-
             $query = DAE::connect($sql);
+            $total = count($query->fetchAll(PDO::FETCH_ASSOC));
+            $array_tables = DAE::connect($sql);
+        ?>
+            <form method="post" action="query">
+                <section class="form pb-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="select col-lg-6">
+                                <h5>Select a Table:</h5>
+                                <div class="card border-0">
+                                    <div class="card-body p-0">
+                                        <select onchange="showrow(this.value)" name="table" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
+                                            <option value="">(Total: <?php echo $total; ?> tables)</option>
+                                            <?php foreach ($array_tables as $tab) {
+                                                echo "<option value='" . $tab[0] . "'>" . $tab[0] . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
-            echo "<ol>";
-            foreach ($query as $row) {
-                echo "<li>" . $row[0] . "</li>";
-            }
-            echo "</ol>";
+                            <div class="input col-lg-3">
+                                <h5>Rows number ?</h5>
+                                <div class="wait shadow">
+                                    <div class="ico-wait spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                                <input class="result shadow" type="number" name="rows" placeholder="" required>
+                            </div>
 
-            echo DAE::footer();
+                            <div class="input col-lg-2">
+                                <h5>Order ?</h5>
+                                <div class="radio">
+                                    <label><input type="radio" name="order" value="ASC" checked>&emsp;ASC</label>
+                                    <br>
+                                    <label><input type="radio" name="order" value="DESC">&emsp;DESC</label>
+                                </div>
+                            </div>
+
+                            <div class="input col-lg-1">
+                                <h5>&nbsp;</h5>
+                                <button title="Submit" class="shadow btn btn-primary" type="submit" name="submit"><i class="ri-play-fill"></i></button>
+                            </div>
+                        </div>
+                </section>
+            </form>
+
+        <?php
         } else {
             echo DAE::error();
         }
+        echo DAE::footer();
+        ?>
+        <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/assets/select.js"></script>
+    <?php
     }
 
     public static function query()
     {
+        echo DAE::header();
+    ?>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
+        <button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top"><i class="ri-arrow-up-fill"></i></button>
+        <?php
 
-        if ($_SESSION['dae']) {
-            echo DAE::header();
-        ?>
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
-            <button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top"><i class="ri-arrow-up-fill"></i></button>
-
-            <?php
+        if ($_SESSION['dae'] == "CEBI") {
 
             if (isset($_POST['submit']) && $_POST['table'] != "" && $_POST['rows'] != 0) {
 
@@ -295,25 +336,61 @@ class DAE
                     <br><br>
 
                 </div>
-                <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-                <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
-                <script src="assets/scroll.js"></script>
-                <script src="assets/table.js"></script>
-
         <?php
             } else {
                 echo DAE::error();
             }
-            echo DAE::footer();
+        } elseif ($_SESSION['dae'] == "ASSESSOR") {
+
+
+            if (isset($_POST['submit']) && $_POST['table'] != "" && $_POST['rows'] != 0) {
+
+                $table = $_POST['table'];
+                $rows = $_POST['rows'];
+                $order = $_POST['order'];
+
+                $sql = "SELECT * FROM $table";
+
+                $query = DAE::connect($sql)->fetchAll(PDO::FETCH_ASSOC);
+               
+                ?>                
+
+                <div class="query">
+
+                    <h4>Table: <?php echo $table; ?></h4><br><br> 
+                    
+                    <?php
+                    print_r($query);
+                    ?>
+
+                    <br><br><br>
+                    <a href="/select" title="Back"><button type="button" class="btn btn-primary">&emsp;<i class="ri-skip-back-fill"></i>&emsp;</button></a>
+                    <br><br>
+
+                </div>
+        <?php
+            } else {
+                echo DAE::error();
+            }
+
+
+
         } else {
             echo DAE::error();
         }
+        echo DAE::footer();
+        ?>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+        <script src="assets/scroll.js"></script>
+        <script src="assets/table.js"></script>
+    <?php
     }
 
 
     public static function error()
     {
-        ?>
+    ?>
         <br>
         <h2>Error 403 Forbidden<br><br>
             <a href='/' title='Go Back'><button type='button' class='btn btn-primary'>&emsp;<i class='ri-skip-back-fill'></i>&emsp;</button></a>
@@ -325,9 +402,15 @@ class DAE
     {
         $table = $_POST['tab'];
         $sql = "SELECT COUNT(*) FROM $table;";
-        preg_match_all('/<tr>(.*?)<\/tr>/s', DAE::connect($sql), $content);
-        $result = trim(strip_tags($content[0][1]));
-        echo $result;
+        if ($_SESSION['dae'] == "CEBI") {
+            preg_match_all('/<tr>(.*?)<\/tr>/s', DAE::connect($sql), $content);
+            $result = trim(strip_tags($content[0][1]));
+            echo $result;
+        } elseif ($_SESSION['dae'] == "ASSESSOR") {
+            $query = DAE::connect($sql);
+            $row = $query->fetch();
+            echo $row[0];
+        }
     }
 
     public static function logout()
