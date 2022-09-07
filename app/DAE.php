@@ -133,10 +133,10 @@ class DAE
                                 <br>
 
                                 <div class="form-check">
-                                    <label class="form-check-label"><input class="form-check-input" type="radio" name="database" value="CEBI" checked> DATABASE CEBI</label>
+                                    <label class="form-check-label"><img src="/assets/logo_oracle.png" class="img-fluid"><input class="form-check-input" type="radio" name="database" value="CEBI" checked> CEBI</label>
                                 </div>
                                 <div class="form-check">
-                                    <label class="form-check-label"><input class="form-check-input" type="radio" name="database" value="ASSESSOR"> DATABASE ASSESSOR</label>
+                                    <label class="form-check-label"><img src="/assets/logo_firebase.png" class="img-fluid"><input class="form-check-input" type="radio" name="database" value="ASSESSOR"> ASSESSOR</label>
                                 </div>
 
                                 <br>

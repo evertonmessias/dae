@@ -50,6 +50,11 @@ h1,h2,h3,h4 {
     width: 100%;
 }
 
+.form .login img{
+    height: 20px;
+    margin-top: -5px;
+}
+
 .form .login .error-login{
     position: relative;
     width: 100%;
