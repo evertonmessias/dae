@@ -316,7 +316,66 @@ class DAE
                     }
                 }
 
-                $strings_table = "<table id='result' class='table table-striped table-bordered' style='width:100%'><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table>"; ?>
+                $strings_table = "<table id='result' class='table table-striped table-bordered' style='width:100%'><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table>";
+
+        ?>
+
+                <div class="query">
+
+                    <h4>Table: <?php echo $table; ?></h4>
+
+                    <?php if ($thead != "" && $tbody != "") {
+                        echo $strings_table;
+                    } else { ?>
+
+                        <br>
+                        <h4>No results</h4>
+
+                    <?php } ?>
+
+                    <br><br>
+                    <a href="/select" title="Back"><button type="button" class="btn btn-primary">&emsp;<i class="ri-skip-back-fill"></i>&emsp;</button></a>
+                    <br><br>
+
+                </div>
+            <?php
+            } else {
+                echo DAE::error();
+            }
+        } elseif ($_SESSION['dae'] == "ASSESSOR") {
+
+
+            if (isset($_POST['submit']) && $_POST['table'] != "" && $_POST['rows'] != 0) {
+
+                $table = $_POST['table'];
+                $rows = $_POST['rows'];
+                $order = $_POST['order'];
+
+                $sql = "SELECT * FROM $table";
+
+                // ********** FAZER LIMITE E ORDENAÇÃO NO FIREBASE ****************
+
+                $array = DAE::connect($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+
+                $thead = "<tr>";
+                foreach ($array[0] as $key => $value) {
+                    $thead .= "<th>" . $key . "</th>";
+                }
+                $thead .= "</tr>";
+
+                $tbody = "";
+                foreach ($array as $row) {
+                    $tbody .= "<tr>";
+                    foreach ($row as $key => $value) {
+                        $tbody .= "<td>" . $value . "</td>";
+                    }
+                    $tbody .= "</th>";
+                }
+
+                $strings_table = "<table id='result' class='table table-striped table-bordered' style='width:100%'><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table>";
+
+            ?>
 
                 <div class="query">
 
@@ -340,41 +399,6 @@ class DAE
             } else {
                 echo DAE::error();
             }
-        } elseif ($_SESSION['dae'] == "ASSESSOR") {
-
-
-            if (isset($_POST['submit']) && $_POST['table'] != "" && $_POST['rows'] != 0) {
-
-                $table = $_POST['table'];
-                $rows = $_POST['rows'];
-                $order = $_POST['order'];
-
-                $sql = "SELECT * FROM $table";
-
-                $query = DAE::connect($sql)->fetchAll(PDO::FETCH_ASSOC);
-               
-                ?>                
-
-                <div class="query">
-
-                    <h4>Table: <?php echo $table; ?></h4><br><br> 
-                    
-                    <?php
-                    print_r($query);
-                    ?>
-
-                    <br><br><br>
-                    <a href="/select" title="Back"><button type="button" class="btn btn-primary">&emsp;<i class="ri-skip-back-fill"></i>&emsp;</button></a>
-                    <br><br>
-
-                </div>
-        <?php
-            } else {
-                echo DAE::error();
-            }
-
-
-
         } else {
             echo DAE::error();
         }
