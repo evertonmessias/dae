@@ -1,17 +1,25 @@
-function showrow(tab){
+$(() => {
+    $(".select-submit").click(() => {
+        if ($(".result").val() != "") {
+            $(".wait-submit").show();
+        }
+    })
+});
+
+function showrow(tab) {
     $(".result").hide();
     $(".form .wait").show();
     $(".form .ico-wait").show();
     $.ajax({
         type: "POST",
         url: "showrow",
-        data: {tab:tab},
-        success: function(res){
+        data: { tab: tab },
+        success: function (res) {
             $(".form .wait").hide();
             $(".form .ico-wait").hide();
-            $(".result").attr("placeholder","( "+res+" rows )").show();
+            $(".result").attr("placeholder", "( " + res + " rows )").show();
         }
-    });    
+    });
 }
 
 const sorting = document.querySelector('.selectpicker');
@@ -22,6 +30,6 @@ const sortingchoices = new Choices(sorting, {
 });
 
 let sortingClass = sorting.getAttribute('class');
-window.onload= function () {    
+window.onload = function () {
     sorting.parentElement.setAttribute('class', sortingClass);
 }

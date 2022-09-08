@@ -83,6 +83,11 @@ class DAE
         </head>
 
         <body>
+            <div class="wait-submit">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
             <div class="box-title">
                 <h1 class="title">DAE</h1>
                 <?php
@@ -167,6 +172,7 @@ class DAE
     public static function select()
     {
         echo DAE::header();
+
         if ($_SESSION['dae'] == "CEBI") {
             $sql = "SELECT table_name FROM all_tables;";
             $array_tables = array();
@@ -213,7 +219,7 @@ class DAE
 
                             <div class="input col-lg-1">
                                 <h5>&nbsp;</h5>
-                                <button title="Submit" class="shadow btn btn-primary" type="submit" name="submit"><i class="ri-play-fill"></i></button>
+                                <button title="Submit" class="select-submit shadow btn btn-primary" type="submit" name="submit"><i class="ri-play-fill"></i></button>
                             </div>
                         </div>
                 </section>
@@ -268,7 +274,7 @@ class DAE
 
                             <div class="input col-lg-1">
                                 <h5>&nbsp;</h5>
-                                <button title="Submit" class="shadow btn btn-primary" type="submit" name="submit"><i class="ri-play-fill"></i></button>
+                                <button title="Submit" class="select-submit shadow btn btn-primary" type="submit" name="submit"><i class="ri-play-fill"></i></button>
                             </div>
                         </div>
                 </section>
