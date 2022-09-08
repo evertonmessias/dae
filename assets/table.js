@@ -1,3 +1,9 @@
 $(document).ready(function () {
-    $('#result').DataTable();
+
+    var table = $('#result').DataTable({
+        lengthChange: false,
+        buttons: ['excel', 'pdf']
+    });
+    table.buttons().container().appendTo(".dae-export");
+
 });

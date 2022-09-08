@@ -168,3 +168,21 @@ a {
     width: 95%;
     margin-top: 20px;
 }
+
+.dae-export{
+    margin: 0;padding: 0;
+    display: block;
+    position: relative;
+    width: 140px;
+    margin: 0 auto;
+    top: -100px;
+    text-align: center;
+}
+
+.dae-export .btn{
+    border-radius: 5px !important;
+}
+
+.dae-export .buttons-pdf{
+    margin-left: 15px !important;
+}

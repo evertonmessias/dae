@@ -297,6 +297,10 @@ class DAE
         echo DAE::header();
     ?>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
+        <link type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" rel="stylesheet"/>
+        <link type="text/css" href="https://cdn.datatables.net/autofill/2.4.0/css/autoFill.bootstrap4.css" rel="stylesheet"/>
+        <link type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" rel="stylesheet"/>
+        
         <button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top"><i class="ri-arrow-up-fill"></i></button>
         <?php
 
@@ -344,6 +348,10 @@ class DAE
                     <br><br>
 
                 </div>
+                <div class="dae-export">
+                    <strong>Export to:</strong>
+                </div>
+                <h1>&nbsp;</h1>
             <?php
             } else {
                 echo DAE::error();
@@ -398,6 +406,10 @@ class DAE
                     <br><br>
 
                 </div>
+                <div class="dae-export">
+                    <strong>Export to:</strong>
+                </div>
+                <h1>&nbsp;</h1>
         <?php
             } else {
                 echo DAE::error();
@@ -409,6 +421,16 @@ class DAE
         ?>
         <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/autofill/2.4.0/js/dataTables.autoFill.min.js"></script>
+        <script src="https://cdn.datatables.net/autofill/2.4.0/js/autoFill.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
         <script src="assets/scroll.js"></script>
         <script src="assets/table.js"></script>
     <?php
