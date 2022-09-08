@@ -351,12 +351,9 @@ class DAE
                 $rows = $_POST['rows'];
                 $order = $_POST['order'];
 
-                $sql = "SELECT * FROM $table";
-
-                // ********** FAZER LIMITE E ORDENAÇÃO NO FIREBASE ****************
+                $sql = "SELECT first $rows * FROM $table ORDER BY 1 $order";
 
                 $array = DAE::connect($sql)->fetchAll(PDO::FETCH_ASSOC);
-
 
                 $thead = "<tr>";
                 foreach ($array[0] as $key => $value) {
