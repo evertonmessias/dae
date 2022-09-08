@@ -370,7 +370,7 @@ class DAE
                     $tbody .= "</th>";
                 }
 
-                $strings_table = "<table id='result' class='table table-striped table-bordered' style='width:100%'><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table>";
+                $strings_table = "<table id='result' class='table table-striped table-bordered' style='width:100%'><thead>" . $thead . "</thead><tbody>" . utf8_encode($tbody) . "</tbody></table>";
 
             ?>
 
