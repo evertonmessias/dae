@@ -336,6 +336,7 @@ class DAE
 
                     <?php if ($thead != "" && $tbody != "") {
                         echo $strings_table;
+                        echo '<div class="dae-export"><strong>Export to:</strong></div>';
                     } else { ?>
 
                         <br>
@@ -347,10 +348,7 @@ class DAE
                     <a href="/select" title="Back"><button type="button" class="btn btn-primary">&emsp;<i class="ri-skip-back-fill"></i>&emsp;</button></a>
                     <br><br>
 
-                </div>
-                <div class="dae-export">
-                    <strong>Export to:</strong>
-                </div>
+                </div>                
                 <h1>&nbsp;</h1>
             <?php
             } else {
@@ -394,6 +392,7 @@ class DAE
 
                     <?php if ($thead != "" && $tbody != "") {
                         echo $strings_table;
+                        echo '<div class="dae-export"><strong>Export to:</strong></div>';
                     } else { ?>
 
                         <br>
@@ -405,9 +404,6 @@ class DAE
                     <a href="/select" title="Back"><button type="button" class="btn btn-primary">&emsp;<i class="ri-skip-back-fill"></i>&emsp;</button></a>
                     <br><br>
 
-                </div>
-                <div class="dae-export">
-                    <strong>Export to:</strong>
                 </div>
                 <h1>&nbsp;</h1>
         <?php
