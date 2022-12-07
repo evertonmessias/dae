@@ -91,7 +91,7 @@ class DAE
             <div class="box-title">
                 <h1 class="title">DAE</h1>
                 <?php
-                if ($_SESSION['dae']) {
+                if (isset($_SESSION['dae'])) {
                     echo '<a href="logout"><button type="button" class="btn btn-danger">Logout</button></a>';
                     echo "<h4>Database: " . $_SESSION['dae'] . "</h4>";
                 }
@@ -113,7 +113,7 @@ class DAE
 
     public static function login()
     {
-        if ($_SESSION['dae']) {
+        if (isset($_SESSION['dae'])) {
             header('Location:select');
         } else {
             echo DAE::header();
