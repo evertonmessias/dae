@@ -239,7 +239,7 @@ class DAE
         <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
-        <script src="assets/scroll.js"></script>
+        <script src="assets/script.js"></script>
         <?php
     }
 

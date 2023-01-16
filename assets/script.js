@@ -1,6 +1,9 @@
 $(document).ready(function () {
 
   var table = $('#result').DataTable({
+    //paging: false,
+    ordering: false,
+    //info: false,
     lengthChange: false,
     buttons: ['excel']
   });
