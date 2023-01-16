@@ -16,10 +16,17 @@ h1,h2,h3,h4 {
     font-weight: 800;
 }
 
-.box-title a{
+.box-title a.btn-logout{
     display: block;
     position: absolute;
     right: 100px;
+    top: 50px;
+}
+
+.box-title a.btn-back{
+    display: block;
+    position: absolute;
+    left: 100px;
     top: 50px;
 }
 
@@ -50,139 +57,34 @@ h1,h2,h3,h4 {
     z-index: 1000;
 }
 
-
-.form h5{
-    color: #444;
-    padding-left: 5px;
-}
-
-.form .select, .form .login{
-    display: block;
-    position: relative;
-    margin: 0 auto;
-    margin-top: 50px;
-    font-size: 20px;
-    color: #444;
-}
-
-.form .login label, .form .login button{
-    width: 100%;
-}
-
-.form .login img{
-    height: 20px;
-    margin-top: -5px;
-}
-
-.form .login .error-login{
-    position: relative;
-    width: 100%;
-    text-align: center;
-    color: #f00;
-    margin-top: 5px;
-    font-size: 14px;
-}
-
-.form .select .choices__list{
-    font-size: 17px !important;
-    color: #333 !important; 
-}
-
-.form .input{
-    margin-top: 35px;
-    padding: 15px;
-}
-
-.form .input input,.form .input button{
-    border: 0;
-    height: 72px;
-    padding: 2px 15px;
-    width: 100%;
-    border-radius: 5px;
-}
-
-.form .result, .form .ico-wait{
-    display: none;
-}
-
-.form .wait{
-    height: 72px;
-    padding: 20px;
-}
-
-.form .radio{
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-    border: 0;
-    height: 72px;
-    padding: 10px;
-    border-radius: 5px; 
-}
-
-.form .input input[type=radio]{
-    position: relative;
-    height: 20px;
-    width: auto;
-    left: 10px;
-    top: 3px;
-}
-
-.form .input label{
-    margin-top: -20px;
-    color: #888;
-}
-
-.form .input button{
-    font-size: 25px;
-}
-
-.bg-light {
-    background: #eef0f4;
-}
-
-.choices__list--dropdown .choices__item--selectable {
-    padding-right: 1rem;
-}
-
-.choices__list--single {
-    padding: 0;
-}
-
-.choices[data-type*=select-one]:after {
-    right: 1.5rem;
-}
-
-.shadow {
-    box-shadow: 0.3rem 0.3rem 1rem rgba(178, 200, 244, 0.23);
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s;
-}
-
-.query {
-    display: block;
-    position: relative;
-    margin: 0 auto;
-    width: 95%;
-    margin-top: 20px;
-}
-
-.dae-export{
-    margin: 0;padding: 0;
-    display: block;
-    position: relative;
-    width: 140px;
-    margin: 0 auto;
-    top: 80px;
+form.login{
     text-align: center;
 }
 
-.dae-export .btn{
-    border-radius: 5px !important;
+form.select .input{
+    width: fit-content;
 }
 
-.dae-export .buttons-pdf{
-    margin-left: 15px !important;
+form.select .input button{
+    margin-top: 10px;
+    padding: 5px 25px;
+}
+
+form.select h5{
+    width: fit-content;
+    float: left;
+}
+
+form.select small{
+    width: fit-content;
+    float: right;
+}
+
+table {
+    border-spacing: 0;
+}
+td,
+th {
+    border: 1px solid #000;
+    padding: 5px;
 }
