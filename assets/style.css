@@ -81,10 +81,14 @@ form.select small{
 }
 
 table {
+    width: fit-content;
+    display: block;
+    position: relative;
+    margin: 0 auto;
     border-spacing: 0;
 }
 td,
 th {
-    border: 1px solid #000;
+    border: 1px solid #555;
     padding: 5px;
 }

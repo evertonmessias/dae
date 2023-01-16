@@ -24,7 +24,6 @@ class Routes
     {
         return explode("/", $_SERVER['REQUEST_URI']);
     }
-
 }
 
 class DAE
@@ -120,37 +119,37 @@ class DAE
             echo self::header();
         ?>
             <form class="login" method="POST">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
                             <br>
-                                <div class="form-group">
-                                    <label>
-                                        <input type="text" name="user" class="form-control" placeholder="Username" required>
-                                    </label>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label>
-                                        <input type="password" name="pass" class="form-control" placeholder="Password" required>
-                                    </label>
-                                </div>
-                                <br>
-                                <button type="submit" name="btnlogin" class="btn btn-primary">Submit</button>
-                                <?php
-                                if (isset($_POST['btnlogin']) &&  isset($_POST['user']) && isset($_POST['pass'])) {
-                                    if ($_POST['user'] == USERNAME && $_POST['pass'] == PASSWORD) {
-                                        $_SESSION['dae'] = "CEBI";
-                                        header('Location:select');
-                                    } else {
-                                        echo "<p class='error-login'>Username or Password <b>Invalid</b> !</p>";
-                                    }
-                                }
-                                ?>
-
+                            <div class="form-group">
+                                <label>
+                                    <input type="text" name="user" class="form-control" placeholder="Username" required>
+                                </label>
                             </div>
+                            <br>
+                            <div class="form-group">
+                                <label>
+                                    <input type="password" name="pass" class="form-control" placeholder="Password" required>
+                                </label>
+                            </div>
+                            <br>
+                            <button type="submit" name="btnlogin" class="btn btn-primary">Submit</button>
+                            <?php
+                            if (isset($_POST['btnlogin']) &&  isset($_POST['user']) && isset($_POST['pass'])) {
+                                if ($_POST['user'] == USERNAME && $_POST['pass'] == PASSWORD) {
+                                    $_SESSION['dae'] = "CEBI";
+                                    header('Location:select');
+                                } else {
+                                    echo "<p class='error-login'>Username or Password <b>Invalid</b> !</p>";
+                                }
+                            }
+                            ?>
+
                         </div>
                     </div>
+                </div>
             </form>
 
         <?php
@@ -164,17 +163,12 @@ class DAE
 
         if (isset($_SESSION['dae'])) {
         ?>
-        <br>
+            <br>
             <form class="select" method="post" action="query">
                 <div class="container">
                     <div class="row">
                         <div class="select col-lg-12">
                             <h5>Write a Query:</h5>
-                            <small>e.g.:<br>
-                            SELECT * FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE ROWNUM <= 10 AND EXERCICIO LIKE '2022' AND TIPO LIKE 'RECEITA' ORDER BY 5 DESC;<br>
-                            SELECT TIPO, NOME_DETALHE FROM (SELECT ROWNUM RN, TIPO, NOME_DETALHE FROM MOVIMENTO_EMPENHOS_RECEITAS) WHERE RN BETWEEN 10 AND 20;<br>                      
-                            SELECT * FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE DATA BETWEEN TO_DATE('10-JAN-15','DD-MON-YY') AND TO_DATE('20-JAN-15','DD-MON-YY');
-                        </small>
                             <textarea class="form-control" name="query" rows="5"></textarea>
                         </div>
                         <br>
@@ -200,7 +194,7 @@ class DAE
         if (isset($_SESSION['dae']) && isset($_POST['submit']) && $_POST['query']) {
 
             echo '<button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top"><i class="ri-arrow-up-fill"></i></button>';
-            
+
             $sql = $_POST['query'];
 
             preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(self::connect($sql)), $content);
@@ -212,24 +206,21 @@ class DAE
                     $tbody .= $rt;
                 }
             }
-            $strings_table = "<br><table><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table>";
+            $strings_table = "<div class='container'><div class='row'><div class='col-lg-12'><br><table><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table></div></div></div>";
 
             echo $strings_table;
-
         } else {
             echo self::error();
         }
         echo self::footer();
-        ?>        
-        <script src="assets/scroll.js"></script>       
-    <?php
+    ?>
+        <script src="assets/scroll.js"></script>
+        <?php
     }
-
-
 
     public static function error()
     {
-    ?>
+        ?>
         <br>
         <h2>Error 403 Forbidden<br><br>
             <a href='/' title='Go Back'><button type='button' class='btn btn-primary'>&emsp;<i class='ri-skip-back-fill'></i>&emsp;</button></a>
@@ -243,4 +234,50 @@ class DAE
         session_destroy();
         header('Location:/');
     }
+
+    //*************************************************** API ************************************************************/
+
+    public static function apicebi2022()
+    {
+        if (isset($_GET['tipo'])) {
+
+        ?>
+            <style>
+                table {
+                    width: fit-content;
+                    display: block;
+                    position: relative;
+                    margin: 0 auto;
+                    border-spacing: 0;
+                }
+
+                td,
+                th {
+                    border: 1px solid #555;
+                    padding: 5px;
+                }
+            </style>
+        <?php
+
+            $tipo = $_GET['tipo']; //RECEITA & PAGAMENTO
+
+            $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE '$tipo' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;";
+
+            preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
+            $results_table = $content[0];
+            $thead = array_shift($results_table);
+            $tbody = "";
+            foreach ($results_table as $rt) {
+                if ($rt != $thead) {
+                    $tbody .= $rt;
+                }
+            }
+            $strings_table = "<table><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table>";
+
+            echo $strings_table;
+        } else {
+            echo "<h4>/apicebi2022?tipo= RECEITA ou PAGAMENTO</h4>";
+        }
+    }
+
 }
