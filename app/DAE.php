@@ -259,7 +259,7 @@ class DAE
             </style>
         <?php
 
-            $tipo = $_GET['tipo']; //RECEITA & PAGAMENTO
+            $tipo = $_GET['tipo']; //RECEITA ou PAGAMENTO
 
             $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE '$tipo' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;";
 
