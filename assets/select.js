@@ -7,6 +7,7 @@ $(() => {
 });
 
 function showrow(tab) {
+    console.log(tab)
     $(".result").hide();
     $(".form .wait").show();
     $(".form .ico-wait").show();

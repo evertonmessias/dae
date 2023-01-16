@@ -15,7 +15,7 @@ class Routes
             if (method_exists($controller, $action)) {
                 return call_user_func_array(array($controller, $action), []);
             } else {
-                echo DAE::header() . DAE::error() . DAE::footer();;
+                echo DAE::header() . DAE::error() . DAE::footer();
             }
         }
     }
@@ -25,7 +25,7 @@ class DAE
 {
     public static function connect($sql)
     {
-        if ($_SESSION['dae'] == "CEBI") {
+        //if ($_SESSION['dae'] == "CEBI") {
 
             $connection = ssh2_connect(ssh_host, ssh_port);
 
@@ -53,14 +53,14 @@ class DAE
             } else {
                 die("<p>Authentication Failed!</p>");
             }
-        } elseif ($_SESSION['dae'] == "ASSESSOR") {
+        /*} elseif ($_SESSION['dae'] == "ASSESSOR") {
             try {
                 $conn = new PDO(fdsn, user, pass);
                 return $conn->query($sql);
             } catch (PDOException $e) {
                 return "ERROR: " . $e->getMessage();
             }
-        }
+        }*/
     }
 
     public static function header()
@@ -297,10 +297,10 @@ class DAE
         echo DAE::header();
     ?>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
-        <link type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" rel="stylesheet"/>
-        <link type="text/css" href="https://cdn.datatables.net/autofill/2.4.0/css/autoFill.bootstrap4.css" rel="stylesheet"/>
-        <link type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" rel="stylesheet"/>
-        
+        <link type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+        <link type="text/css" href="https://cdn.datatables.net/autofill/2.4.0/css/autoFill.bootstrap4.css" rel="stylesheet" />
+        <link type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+
         <button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top"><i class="ri-arrow-up-fill"></i></button>
         <?php
 
@@ -348,7 +348,7 @@ class DAE
                     <a href="/select" title="Back"><button type="button" class="btn btn-primary">&emsp;<i class="ri-skip-back-fill"></i>&emsp;</button></a>
                     <br><br>
 
-                </div>                
+                </div>
                 <h1>&nbsp;</h1>
             <?php
             } else {
@@ -440,7 +440,7 @@ class DAE
         <h2>Error 403 Forbidden<br><br>
             <a href='/' title='Go Back'><button type='button' class='btn btn-primary'>&emsp;<i class='ri-skip-back-fill'></i>&emsp;</button></a>
         </h2>
-<?php
+    <?php
     }
 
     public static function showrow()
@@ -464,4 +464,69 @@ class DAE
         session_destroy();
         header('Location:/');
     }
+
+
+    public static function cebi()
+    {
+        ?>
+        <style>
+            table {
+                border-spacing: 0;
+            }
+
+            td,
+            th {
+                border: 1px solid #000;
+            }
+        </style>
+        <?php
+
+        if(isset($_GET['tab']) && isset($_GET['row'])){
+
+        $tab = $_GET['tab'];
+        
+        $row = $_GET['row'];
+
+        //$sql = "SELECT * FROM $tab WHERE ROWNUM <= $row ORDER BY 5 DESC;";
+        
+        //$sql = "SELECT COUNT(*) FROM $tab WHERE EXERCICIO LIKE '2022' AND TIPO LIKE 'RECEITA';";
+        
+        //$sql = "SELECT * FROM $tab WHERE ROWNUM <= $row AND EXERCICIO LIKE '2022' AND TIPO LIKE 'RECEITA' ORDER BY 5 DESC;";
+
+        $sql = "SELECT * FROM $tab WHERE 'DATA' BETWEEN '29-AUG-22' AND '31-NOV-22';";        
+
+        echo utf8_encode(DAE::connect($sql));
+
+        //**************  PESQUISAR ROW máx min
+        
+        /*preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
+        $results_table = $content[0];
+        $thead = array_shift($results_table);
+        $tbody = "";
+        foreach ($results_table as $rt) {
+            if ($rt != $thead) {
+                $tbody .= $rt;
+            }
+        }
+        $strings_table = "<table><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table>";
+        echo $strings_table;*/
+
+    }else{
+        echo "<h4 style='text-align:center;margin-top:50px'>Obs.: Use cebi?tab=xxx&row=yyy</h4>";
+    }
+    }
+
+    public static function scol(){
+        if(isset($_GET['str'])){
+        $str = $_GET['str'];
+        $sql = "SELECT owner, table_name, column_name FROM all_tab_columns WHERE column_name LIKE '%$str%';";
+        $result = DAE::connect($sql);
+        echo $result;    
+    }else{
+        echo "<h4 style='text-align:center;margin-top:50px'>Obs.: Use scol?str=xxxxxx</h4>";
+    }
 }
+
+}
+
+
