@@ -80,15 +80,19 @@ form.select small{
     float: right;
 }
 
-table {
-    width: fit-content;
-    display: block;
-    position: relative;
-    margin: 0 auto;
-    border-spacing: 0;
+.container{
+    margin-bottom: 100px !important;
 }
-td,
-th {
-    border: 1px solid #555;
-    padding: 5px;
+
+.dae-export{
+    margin: 0;padding: 0;
+    width: fit-content;
+    position: absolute;
+    left: 200px;
+    top: 50px;    
+}
+
+.dae-export button{
+    padding: 7px 20px !important;
+    text-align: center;
 }

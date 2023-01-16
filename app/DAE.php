@@ -73,6 +73,7 @@ class DAE
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
             <link href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" rel="stylesheet">
             <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+            <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" rel="stylesheet">
             <link href="/assets/style.css" rel="stylesheet">
             <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         </head>
@@ -87,6 +88,7 @@ class DAE
                 <?php
                 if (Routes::url_active()[1] == "query") {
                     echo '<a class="btn-back" href="/select" title="Back"><button type="button" class="btn btn-primary">&emsp;<i class="ri-skip-back-fill"></i>&emsp;</button></a>';
+                    echo '<div class="dae-export"></div>';
                 }
                 ?>
                 <h1 class="title">DAE</h1>
@@ -169,6 +171,9 @@ class DAE
                     <div class="row">
                         <div class="select col-lg-12">
                             <h5>Write a Query:</h5>
+                            <small>
+                            e.g.: SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE 'RECEITA' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;
+                            </small>
                             <textarea class="form-control" name="query" rows="5"></textarea>
                         </div>
                         <br>
@@ -191,9 +196,16 @@ class DAE
     {
         echo self::header();
 
-        if (isset($_SESSION['dae']) && isset($_POST['submit']) && $_POST['query']) {
+        ?>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
+        <link type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+        <link type="text/css" href="https://cdn.datatables.net/autofill/2.4.0/css/autoFill.bootstrap4.css" rel="stylesheet" />
+        <link type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" rel="stylesheet" />
 
-            echo '<button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top"><i class="ri-arrow-up-fill"></i></button>';
+        <button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top"><i class="ri-arrow-up-fill"></i></button>
+        <?php
+
+        if (isset($_SESSION['dae']) && isset($_POST['submit']) && $_POST['query']) {
 
             $sql = $_POST['query'];
 
@@ -206,14 +218,27 @@ class DAE
                     $tbody .= $rt;
                 }
             }
-            $strings_table = "<div class='container'><div class='row'><div class='col-lg-12'><br><table><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table></div></div></div>";
+            $strings_table = "<div class='container'><div class='row'><div class='col-lg-12'><br><table id='result' class='table table-striped table-bordered' style='width:100%'><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table></div></div></div><br>";
 
             echo $strings_table;
+
         } else {
             echo self::error();
         }
         echo self::footer();
     ?>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/autofill/2.4.0/js/dataTables.autoFill.min.js"></script>
+        <script src="https://cdn.datatables.net/autofill/2.4.0/js/autoFill.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
         <script src="assets/scroll.js"></script>
         <?php
     }
@@ -233,51 +258,6 @@ class DAE
         unset($_SESSION['dae']);
         session_destroy();
         header('Location:/');
-    }
-
-    //*************************************************** API ************************************************************/
-
-    public static function apicebi2022()
-    {
-        if (isset($_GET['tipo'])) {
-
-        ?>
-            <style>
-                table {
-                    width: fit-content;
-                    display: block;
-                    position: relative;
-                    margin: 0 auto;
-                    border-spacing: 0;
-                }
-
-                td,
-                th {
-                    border: 1px solid #555;
-                    padding: 5px;
-                }
-            </style>
-        <?php
-
-            $tipo = $_GET['tipo']; //RECEITA ou PAGAMENTO
-
-            $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE '$tipo' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;";
-
-            preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
-            $results_table = $content[0];
-            $thead = array_shift($results_table);
-            $tbody = "";
-            foreach ($results_table as $rt) {
-                if ($rt != $thead) {
-                    $tbody .= $rt;
-                }
-            }
-            $strings_table = "<table><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table>";
-
-            echo $strings_table;
-        } else {
-            echo "<h4>/apicebi2022?tipo= RECEITA ou PAGAMENTO</h4>";
-        }
     }
 
 }
