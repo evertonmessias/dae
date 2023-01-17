@@ -57,8 +57,32 @@ h1,h2,h3,h4 {
     z-index: 1000;
 }
 
-form.login{
+
+form .login{
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 50px;
+    font-size: 20px;
+    color: #444;
+}
+
+form .login label, form .login button{
+    width: 100%;
+}
+
+form .login img{
+    height: 20px;
+    margin-top: -5px;
+}
+
+form .login .error-login{
+    position: relative;
+    width: 100%;
     text-align: center;
+    color: #f00;
+    margin-top: 5px;
+    font-size: 14px;
 }
 
 form.select .input{
