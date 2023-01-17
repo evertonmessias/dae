@@ -244,7 +244,6 @@ class DAE
             } else {
                 echo self::error();
             }
-
         } elseif ($_SESSION['dae'] == "ASSESSOR") {
 
             if (isset($_POST['submit']) && $_POST['query']) {
@@ -271,7 +270,6 @@ class DAE
                 $strings_table = "<div class='container'><div class='row'><div class='col-lg-12'><br><table id='result' class='table table-striped table-bordered' style='width:100%'><thead>" . $thead . "</thead><tbody>" . utf8_encode($tbody) . "</tbody></table></div></div></div><br>";
 
                 echo $strings_table;
-
             } else {
                 echo self::error();
             }
@@ -303,7 +301,7 @@ class DAE
         <h2>Error 403 Forbidden<br><br>
             <a href='/' title='Go Back'><button type='button' class='btn btn-primary'>&emsp;<i class='ri-skip-back-fill'></i>&emsp;</button></a>
         </h2>
-    <?php
+<?php
     }
 
     public static function logout()
@@ -313,25 +311,32 @@ class DAE
         header('Location:/');
     }
 
-    public static function cebi()
+    public static function apicebi2022()
     {
-        $_SESSION['dae'] = "CEBI";
-        
-        $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE 'RECEITA' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('06-JAN-22','DD-MON-YY') ORDER BY 1 DESC;";
+        if ($_GET['tipo'] != "") {
 
-        preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
+            $_SESSION['dae'] = "CEBI";
 
-        $results_table = $content[0];        
-        $thead = array_shift($results_table);
-        $tbody = "";
-        foreach ($results_table as $rt) {
-            if ($rt != $thead) {
-                $tbody .= $rt;
+            $tipo = $_GET['tipo']; // RECEITA / PAGAMENTO
+
+            $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE '$tipo' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('06-JAN-22','DD-MON-YY') ORDER BY 1 DESC;";
+
+            preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
+
+            $results_table = $content[0];
+            $thead = array_shift($results_table);
+            $tbody = "";
+            foreach ($results_table as $rt) {
+                if ($rt != $thead) {
+                    $tbody .= $rt;
+                }
             }
+            $table = "<table>" . $thead . $tbody . "</table>";
+            $pattern = '/\n| scope\=\"col\"| align\=\"right\"/i';;
+            $output = preg_replace($pattern, "", $table);
+            echo $output;
+        }else{
+            echo "Informe apicebi2022?tipo=xxx";
         }
-        $table = "<table>" . $thead . $tbody . "</table>";        
-        $pattern = '/\n| scope\=\"col\"| align\=\"right\"/i';;
-        $output = preg_replace($pattern,"", $table);
-        echo $output;
     }
 }
