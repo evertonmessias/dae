@@ -327,11 +327,9 @@ class DAE
                 $tbody .= $rt;
             }
         }
-        $strings_table = "<table><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table>";
-        //echo $strings_table;
-
-        $pattern = '/ scope\=\"col\"| align\=\"right\"/i';;
-        echo preg_replace($pattern,"", $strings_table);
-        
+        $table = "<table>" . $thead . $tbody . "</table>";        
+        $pattern = '/\n| scope\=\"col\"| align\=\"right\"/i';;
+        $output = preg_replace($pattern,"", $table);
+        echo $output;
     }
 }
