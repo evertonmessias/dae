@@ -110,7 +110,6 @@ class DAE
         <?php
     }
 
-
     public static function footer()
     {
         ?>
@@ -119,7 +118,6 @@ class DAE
         </html>
         <?php
     }
-
 
     public static function login()
     {
@@ -317,22 +315,11 @@ class DAE
 
     public static function cebi()
     {
-    ?>
-        <style>
-            table {
-                border-spacing: 0;
-            }
-            td,
-            th {
-                border: 1px solid #000;
-            }
-        </style>
-    <?php
-
-        $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE 'RECEITA' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;";
+        $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE 'RECEITA' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('06-JAN-22','DD-MON-YY') ORDER BY 1 DESC;";
 
         preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
-        $results_table = $content[0];
+
+        $results_table = $content[0];        
         $thead = array_shift($results_table);
         $tbody = "";
         foreach ($results_table as $rt) {
@@ -341,6 +328,10 @@ class DAE
             }
         }
         $strings_table = "<table><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table>";
-        echo $strings_table;
+        //echo $strings_table;
+
+        $pattern = '/ scope\=\"col\"| align\=\"right\"/i';;
+        echo preg_replace($pattern,"", $strings_table);
+        
     }
 }
