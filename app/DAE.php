@@ -315,6 +315,8 @@ class DAE
 
     public static function cebi()
     {
+        $_SESSION['dae'] = "CEBI";
+        
         $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE 'RECEITA' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('06-JAN-22','DD-MON-YY') ORDER BY 1 DESC;";
 
         preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
