@@ -313,30 +313,23 @@ class DAE
 
     public static function apicebi2022()
     {
-        if ($_GET['tipo'] != "") {
+        $_SESSION['dae'] = "CEBI";
 
-            $_SESSION['dae'] = "CEBI";
+        $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE (TIPO LIKE 'RECEITA' OR TIPO LIKE 'PAGAMENTO') AND EXERCICIO LIKE '2022' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;";
 
-            $tipo = $_GET['tipo']; // RECEITA / PAGAMENTO
+        preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
 
-            $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE '$tipo' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('06-JAN-22','DD-MON-YY') ORDER BY 1 DESC;";
-
-            preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
-
-            $results_table = $content[0];
-            $thead = array_shift($results_table);
-            $tbody = "";
-            foreach ($results_table as $rt) {
-                if ($rt != $thead) {
-                    $tbody .= $rt;
-                }
+        $results_table = $content[0];
+        $thead = array_shift($results_table);
+        $tbody = "";
+        foreach ($results_table as $rt) {
+            if ($rt != $thead) {
+                $tbody .= $rt;
             }
-            $table = "<table>" . $thead . $tbody . "</table>";
-            $pattern = '/\n| scope\=\"col\"| align\=\"right\"/i';;
-            $output = preg_replace($pattern, "", $table);
-            echo $output;
-        }else{
-            echo "Informe apicebi2022?tipo=xxx";
         }
+        $table = "<table>" . $thead . $tbody . "</table>";
+        $pattern = '/\n| scope\=\"col\"| align\=\"right\"/i';;
+        $output = preg_replace($pattern, "", $table);
+        echo $output;
     }
 }
