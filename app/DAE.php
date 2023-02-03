@@ -301,7 +301,7 @@ class DAE
         <h2>Error 403 Forbidden<br><br>
             <a href='/' title='Go Back'><button type='button' class='btn btn-primary'>&emsp;<i class='ri-skip-back-fill'></i>&emsp;</button></a>
         </h2>
-        <?php
+<?php
     }
 
     public static function logout()
@@ -313,43 +313,37 @@ class DAE
 
     public static function apicebi()
     {
-        if (isset($_GET['ano'])) {
         ?>
-            <style>
-                .apicebi {
-                    border-spacing: 0;
-                    width: 100%;
-                }
-
-                .apicebi th,
-                .apicebi td {
-                    border: 1px solid #000;
-                    padding: 3px;
-                }
-            </style>
-<?php
-            $_SESSION['dae'] = "CEBI";
-
-            $ano = $_GET['ano'];
-
-            $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE (TIPO LIKE 'RECEITA' OR TIPO LIKE 'PAGAMENTO') AND EXERCICIO LIKE '$ano' AND DATA BETWEEN TO_DATE('01-JAN-$ano','DD-MON-YYYY') AND TO_DATE('31-DEC-$ano','DD-MON-YYYY') ORDER BY 1 DESC;";
-
-            preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
-
-            $results_table = $content[0];
-            $thead = array_shift($results_table);
-            $tbody = "";
-            foreach ($results_table as $rt) {
-                if ($rt != $thead) {
-                    $tbody .= str_replace('.', ',', $rt);
-                }
+        <style>
+            .apicebi{
+                border-spacing: 0;
+                width: 100%;
             }
-            $table = "<table class='apicebi'>" . $thead . $tbody . "</table>";
-            $pattern = '/\n| scope\=\"col\"| align\=\"right\"/i';;
-            $output = preg_replace($pattern, "", $table);
-            echo $output;
-        } else {
-            echo "<b>Erro, use:</b><br>https://app.evertonm.com/apicebi?ano=YYYY";
+            .apicebi th, .apicebi td{
+                border: 1px solid #000;
+                padding: 3px;
+            }
+        </style>
+        <?php
+        $_SESSION['dae'] = "CEBI";
+
+        $ano = '2015';
+
+        $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE (TIPO LIKE 'RECEITA' OR TIPO LIKE 'PAGAMENTO') AND EXERCICIO LIKE '$ano' AND DATA BETWEEN TO_DATE('01-JAN-$ano','DD-MON-YYYY') AND TO_DATE('31-DEC-$ano','DD-MON-YYYY') ORDER BY 1 DESC;";
+
+        preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
+
+        $results_table = $content[0];
+        $thead = array_shift($results_table);
+        $tbody = "";
+        foreach ($results_table as $rt) {
+            if ($rt != $thead) {
+                $tbody .= str_replace('.',',',$rt);
+            }
         }
+        $table = "<table class='apicebi'>" . $thead . $tbody . "</table>";
+        $pattern = '/\n| scope\=\"col\"| align\=\"right\"/i';;
+        $output = preg_replace($pattern, "", $table);
+        echo $output;
     }
 }
