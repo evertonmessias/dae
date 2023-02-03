@@ -190,7 +190,7 @@ class DAE
                             <?php
                             if ($_SESSION['dae'] == 'CEBI') {  ?>
                                 <small>
-                                    e.g.: SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE EXERCICIO LIKE '2022' AND TIPO LIKE 'RECEITA' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;
+                                    e.g.: SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE (TIPO LIKE 'RECEITA' OR TIPO LIKE 'PAGAMENTO') AND EXERCICIO LIKE '2022' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;
                                 </small>
                             <?php } ?>
                             <textarea class="form-control" name="query" rows="5"></textarea>
@@ -311,8 +311,20 @@ class DAE
         header('Location:/');
     }
 
-    public static function apicebi2022()
+    public static function apicebi()
     {
+        ?>
+        <style>
+            .apicebi{
+                border-spacing: 0;
+                width: 100%;
+            }
+            th,td{
+                border: 1px solid #000;
+                padding: 3px;
+            }
+        </style>
+        <?php
         $_SESSION['dae'] = "CEBI";
 
         $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE (TIPO LIKE 'RECEITA' OR TIPO LIKE 'PAGAMENTO') AND EXERCICIO LIKE '2022' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;";
@@ -327,7 +339,7 @@ class DAE
                 $tbody .= $rt;
             }
         }
-        $table = "<table>" . $thead . $tbody . "</table>";
+        $table = "<table class='apicebi'>" . $thead . $tbody . "</table>";
         $pattern = '/\n| scope\=\"col\"| align\=\"right\"/i';;
         $output = preg_replace($pattern, "", $table);
         echo $output;
