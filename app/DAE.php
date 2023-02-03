@@ -319,7 +319,7 @@ class DAE
                 border-spacing: 0;
                 width: 100%;
             }
-            th,td{
+            .apicebi th, .apicebi td{
                 border: 1px solid #000;
                 padding: 3px;
             }
@@ -327,7 +327,9 @@ class DAE
         <?php
         $_SESSION['dae'] = "CEBI";
 
-        $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE (TIPO LIKE 'RECEITA' OR TIPO LIKE 'PAGAMENTO') AND EXERCICIO LIKE '2022' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;";
+        $ano = '2014';
+
+        $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE (TIPO LIKE 'RECEITA' OR TIPO LIKE 'PAGAMENTO') AND EXERCICIO LIKE '$ano' AND DATA BETWEEN TO_DATE('01-JAN-$ano','DD-MON-YYYY') AND TO_DATE('31-DEC-$ano','DD-MON-YYYY') ORDER BY 1 DESC;";
 
         preg_match_all('/<tr>(.*?)<\/tr>/s', utf8_encode(DAE::connect($sql)), $content);
 
@@ -336,7 +338,7 @@ class DAE
         $tbody = "";
         foreach ($results_table as $rt) {
             if ($rt != $thead) {
-                $tbody .= $rt;
+                $tbody .= str_replace('.',',',$rt);
             }
         }
         $table = "<table class='apicebi'>" . $thead . $tbody . "</table>";
