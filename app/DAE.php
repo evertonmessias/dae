@@ -349,7 +349,7 @@ class DAE
             $output = preg_replace($pattern, "", $table);
             echo $output;
         } else {
-            echo "use: https://app.evertonm.com/apicebi?ano=YYYY";
+            echo "<b>Erro, use:</b><br>https://app.evertonm.com/apicebi?ano=YYYY";
         }
     }
 }
