@@ -311,9 +311,8 @@ class DAE
         header('Location:/');
     }
 
-    public static function apicebi()
+    public static function functioncebi($ano)
     {
-        if (isset($_GET['ano'])) {
         ?>
             <style>
                 .apicebi {
@@ -329,8 +328,6 @@ class DAE
             </style>
             <?php
             $_SESSION['dae'] = "CEBI";
-
-            $ano = $_GET['ano'];
 
             $sql = "SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE (TIPO LIKE 'RECEITA' OR TIPO LIKE 'PAGAMENTO') AND EXERCICIO LIKE '$ano' AND DATA BETWEEN TO_DATE('01-JAN-$ano','DD-MON-YYYY') AND TO_DATE('31-DEC-$ano','DD-MON-YYYY') ORDER BY 1 DESC;";
 
@@ -348,8 +345,18 @@ class DAE
             $pattern = '/\n| scope\=\"col\"| align\=\"right\"/i';;
             $output = preg_replace($pattern, "", $table);
             echo $output;
-        } else {
-            echo "<b>Erro, use:</b><br>https://app.evertonm.com/apicebi?ano=YYYY";
-        }
+    }
+    
+    public static function apicebi(){
+        self::functioncebi(2014);
+    }
+    public static function apicebi2015(){
+        self::functioncebi(2015);
+    }
+    public static function apicebi2016(){
+        self::functioncebi(2016);
+    }
+    public static function apicebi2017(){
+        self::functioncebi(2017);
     }
 }
