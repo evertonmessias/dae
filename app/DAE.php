@@ -235,7 +235,7 @@ class DAE
                 $tbody = "";
                 foreach ($results_table as $rt) {
                     if ($rt != $thead) {                        
-                        $tbody .= str_replace('.', ',', $rt);
+                        $tbody .= $rt;
                     }
                 }
                 $strings_table = "<div class='container'><div class='row'><div class='col-lg-12'><br><table id='result' class='table table-striped table-bordered' style='width:100%'><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table></div></div></div><br>";
