@@ -190,7 +190,7 @@ class DAE
                             <?php
                             if ($_SESSION['dae'] == 'CEBI') {  ?>
                                 <small>
-                                    e.g.: SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE (TIPO LIKE 'RECEITA' OR TIPO LIKE 'PAGAMENTO') AND EXERCICIO LIKE '2022' AND DATA BETWEEN TO_DATE('01-JAN-22','DD-MON-YY') AND TO_DATE('31-DEC-22','DD-MON-YY') ORDER BY 1 DESC;
+                                    e.g.: SELECT DATA,NOME_DETALHE,VALOR,TIPO,EXERCICIO FROM MOVIMENTO_EMPENHOS_RECEITAS WHERE (TIPO LIKE 'RECEITA' OR TIPO LIKE 'PAGAMENTO') AND EXERCICIO LIKE '2014' AND DATA BETWEEN TO_DATE('01-JAN-2014','DD-MON-YYYY') AND TO_DATE('31-DEC-2014','DD-MON-YYYY') ORDER BY 1 ASC;
                                 </small>
                             <?php } ?>
                             <textarea class="form-control" name="query" rows="5"></textarea>
@@ -234,8 +234,8 @@ class DAE
                 $thead = array_shift($results_table);
                 $tbody = "";
                 foreach ($results_table as $rt) {
-                    if ($rt != $thead) {
-                        $tbody .= $rt;
+                    if ($rt != $thead) {                        
+                        $tbody .= str_replace('.', ',', $rt);
                     }
                 }
                 $strings_table = "<div class='container'><div class='row'><div class='col-lg-12'><br><table id='result' class='table table-striped table-bordered' style='width:100%'><thead>" . $thead . "</thead><tbody>" . $tbody . "</tbody></table></div></div></div><br>";
@@ -311,7 +311,7 @@ class DAE
         header('Location:/');
     }
 
-    public static function functioncebi($ano)
+    public static function fcebi($ano)
     {
         ?>
             <style>
@@ -348,15 +348,15 @@ class DAE
     }
     
     public static function apicebi(){
-        self::functioncebi(2014);
+        self::fcebi(2014);
     }
     public static function apicebi2015(){
-        self::functioncebi(2015);
+        self::fcebi(2015);
     }
     public static function apicebi2016(){
-        self::functioncebi(2016);
+        self::fcebi(2016);
     }
     public static function apicebi2017(){
-        self::functioncebi(2017);
+        self::fcebi(2017);
     }
 }

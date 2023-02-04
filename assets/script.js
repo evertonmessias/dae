@@ -1,12 +1,11 @@
 $(document).ready(function () {
 
   var table = $('#result').DataTable({
-    //paging: false,
-    ordering: false,
-    //info: false,
-    lengthChange: false,
+    "ordering": false,
+    pageLength: 50,
     buttons: ['excel']
   });
+
   table.buttons().container().appendTo(".dae-export");
 
   //Get the button
