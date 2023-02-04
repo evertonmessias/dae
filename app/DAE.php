@@ -346,17 +346,7 @@ class DAE
             $output = preg_replace($pattern, "", $table);
             echo $output;
     }
-    
-    public static function apicebi(){
-        self::fcebi(2014);
-    }
-    public static function apicebi2015(){
-        self::fcebi(2015);
-    }
-    public static function apicebi2016(){
-        self::fcebi(2016);
-    }
-    public static function apicebi2017(){
-        self::fcebi(2017);
+    public static function apicebi2023(){
+        self::fcebi(2023);
     }
 }
